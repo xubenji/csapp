@@ -75,3 +75,33 @@ chatgpt回答：
 这两个字符串的地址分别存储在 rdi 和 rsi 寄存器中。  
 然后它调用 string_length 函数计算两个字符串的长度，对比长度是否相等，然后逐个字符进行对比。
 
+### phase_2
+这个考点是考察数组，我卡在这里好久
+
+      40148a:	e8 61 f7 ff ff       	call   400bf0 <__isoc99_sscanf@plt>
+      40148f:	83 f8 05             	cmp    eax,0x5
+      401492:	7f 05                	jg     401499 <read_six_numbers+0x3d>
+
+这个是检查输入的一组数字是否超过五个，我输入123456，  
+因为没有空格，所以这个eax一直是1，好来发现要输入空格。
+读取完输入字符以后，这组数字被保存在[rbx]的地址下，
+
+    (gdb) info reg rbx
+    rbx            0x7fffffffe094      140737488347284
+    
+这个地址保存了我输入的一组数字，32bits的：
+
+    (gdb) x/8xw 0x7fffffffe094
+        0x7fffffffe094: 0x00000002      0x00000004      0x00000008      0x00000010
+        0x7fffffffe0a4: 0x00000020      0x00401431      0x00000000      0x00402210
+
+关键就是这段汇编：
+
+    │   0x400f17 <phase_2+27>   mov    eax,DWORD PTR [rbx-0x4]                                    │
+    │   0x400f1a <phase_2+30>   add    eax,eax                                                    │
+    │B+>0x400f1c <phase_2+32>   cmp    DWORD PTR [rbx],eax 
+    
+在0x400f1a处打断点，第一次发现eax是0x01，每次一个回合eax就增加一倍。
+rbx就少0x04，所以这组数字就是 1 2 4 8 16 32.
+
+

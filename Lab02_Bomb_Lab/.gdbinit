@@ -1,9 +1,12 @@
 file bomb
 set disassembly-flavor intel
-b 70
-b *0x400ee0
-b *0x401338
-b *0x400ef7
+b 67
+b *0x400e44
+b *0x400f0e
+b *0x400f1c
+b *0x400f25
+layout asm
 r
-x/10i $pc
+j *0x400e44
+
 

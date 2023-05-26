@@ -814,6 +814,7 @@ Disassembly of section .text:
   401480:	be c3 25 40 00       	mov    esi,0x4025c3
   401485:	b8 00 00 00 00       	mov    eax,0x0
   40148a:	e8 61 f7 ff ff       	call   400bf0 <__isoc99_sscanf@plt>
+  40148a:	e8 61 f7 ff ff       	call   400bf0 <__isoc99_sscanf@plt>
   40148f:	83 f8 05             	cmp    eax,0x5
   401492:	7f 05                	jg     401499 <read_six_numbers+0x3d>
   401494:	e8 a1 ff ff ff       	call   40143a <explode_bomb>
