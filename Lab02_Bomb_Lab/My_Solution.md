@@ -104,4 +104,31 @@ chatgpt回答：
 在0x400f1a处打断点，第一次发现eax是0x01，每次一个回合eax就增加一倍。
 rbx就少0x04，所以这组数字就是 1 2 4 8 16 32.
 
+### phase_3
+感觉这个比phase_2简单
+检查0x4025cf地址中有些啥
 
+    (gdb) print (char*) 0x4025cf
+    $1 = 0x4025cf "%d %d"
+猜测应该是输入两个数字，第一个数字只需要小于0x07即可
+
+    │b+ 0x400f6a <phase_3+39>   cmp    DWORD PTR [rsp+0x8],0x7      │
+    │   0x400f6f <phase_3+44>   ja     0x400fad <phase_3+106> 
+    
+第二个数字只需要等于0x137，即311
+
+      400fb9:	b8 37 01 00 00       	mov    eax,0x137
+      400fbe:	3b 44 24 0c          	cmp    eax,DWORD PTR [rsp+0xc]
+
+所以我最后的答案是1 311，不过感觉phase_3中间有一些汇编，应该是加分部分
+
+    Continuing.
+    That's number 2.  Keep going!
+    1 311 
+    (gdb) c
+    Continuing.4, 0x0000000000400f60 in phase_3 ()
+    
+    Breakpoint 5, 0x0000000000400f6a in phase_3 ()
+    (gdb) c
+    Continuing.
+    Halfway there
