@@ -1,14 +1,23 @@
 file bomb
 set disassembly-flavor intel
+#layout asm
 b 67
-b *0x400e5b
-b *0x400f25
-layout asm
 
-b *0x400f60
-b *0x400f6a
+b *0x40100c
 
+b *0x400e77
+b *0x400fce
+b *0x40104d
 r
-j *0x400e5b
+j *0x400e77
+display $eax
+display $edx
+display $esi
+display $ecx
+display $edi
+display $rsp
+display /i $pc
+
+
 
 

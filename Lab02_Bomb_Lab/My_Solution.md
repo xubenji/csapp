@@ -132,3 +132,141 @@ rbx就少0x04，所以这组数字就是 1 2 4 8 16 32.
     (gdb) c
     Continuing.
     Halfway there
+    
+### phase_4
+这段准确的说是猜出来的，func4实际上有点像递归
+
+    (gdb) c
+    Continuing.
+    Halfway there!
+    1 0
+    
+    Breakpoint 2, 0x000000000040100c in phase_4 ()
+    1: $eax = 6305664
+    2: $edx = 1
+    3: $esi = 6305664
+    4: $ecx = 3
+    5: $edi = 6305664
+    6: $rsp = (void *) 0x7fffffffe0b8
+    7: x/i $pc
+    => 0x40100c <phase_4>:  sub    rsp,0x18
+    (gdb) c
+    Continuing.
+    
+    Breakpoint 4, 0x0000000000400fce in func4 ()
+    1: $eax = 2
+    2: $edx = 14
+    3: $esi = 0
+    4: $ecx = 0
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe098
+    7: x/i $pc
+    => 0x400fce <func4>:    sub    rsp,0x8
+    (gdb) c
+    Continuing.
+    
+    Breakpoint 4, 0x0000000000400fce in func4 ()
+    1: $eax = 7
+    2: $edx = 6
+    3: $esi = 0
+    4: $ecx = 7
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe088
+    7: x/i $pc
+    => 0x400fce <func4>:    sub    rsp,0x8
+    (gdb) c
+    Continuing.
+    
+    Breakpoint 4, 0x0000000000400fce in func4 ()
+    1: $eax = 3
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 3
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe078
+    7: x/i $pc
+    => 0x400fce <func4>:    sub    rsp,0x8
+    (gdb) c
+    Continuing.
+    
+    Breakpoint 5, 0x000000000040104d in phase_4 ()
+    1: $eax = 0
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 1
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe0a0
+    7: x/i $pc
+    => 0x40104d <phase_4+65>:       test   eax,eax
+    (gdb) ni
+    0x000000000040104f in phase_4 ()
+    1: $eax = 0
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 1
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe0a0
+    7: x/i $pc
+    => 0x40104f <phase_4+67>:       jne    0x401058 <phase_4+76>
+    (gdb) ni
+    0x0000000000401051 in phase_4 ()
+    1: $eax = 0
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 1
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe0a0
+    7: x/i $pc
+    => 0x401051 <phase_4+69>:       cmp    DWORD PTR [rsp+0xc],0x0
+    (gdb) 
+    0x0000000000401056 in phase_4 ()
+    1: $eax = 0
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 1
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe0a0
+    7: x/i $pc
+    => 0x401056 <phase_4+74>:       je     0x40105d <phase_4+81>
+    (gdb) 
+    0x000000000040105d in phase_4 ()
+    1: $eax = 0
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 1
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe0a0
+    7: x/i $pc
+    => 0x40105d <phase_4+81>:       add    rsp,0x18
+    (gdb) 
+    0x0000000000401061 in phase_4 ()
+    1: $eax = 0
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 1
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe0b8
+    7: x/i $pc
+    => 0x401061 <phase_4+85>:       ret    
+    (gdb) 
+    main (argc=<optimized out>, argv=<optimized out>) at bomb.c:96
+    96          phase_defused();
+    1: $eax = 0
+    2: $edx = 2
+    3: $esi = 0
+    4: $ecx = 1
+    5: $edi = 1
+    6: $rsp = (void *) 0x7fffffffe0c0
+    7: x/i $pc
+    => 0x400e93 <main+243>: call   0x4015c4 <phase_defused>
+
+给gpt看了func4，gpt说只要edi足够小，在函数末位的比较时保证ecx大于等于edi，那么eax就为0，那么
+
+      40104d:	85 c0                	test   eax,eax
+      40104f:	75 07                	jne    401058 <phase_4+0x4c>
+就不会跳转到爆炸，第二个爆炸的点就是
+
+      401051:	83 7c 24 0c 00       	cmp    DWORD PTR [rsp+0xc],0x0
+      401056:	74 05                	je     40105d <phase_4+0x51>
+实际上只要满足rsp+oxc中的值为0即可，就是第二个输入的数字。
+
