@@ -270,3 +270,17 @@ rbx就少0x04，所以这组数字就是 1 2 4 8 16 32.
       401056:	74 05                	je     40105d <phase_4+0x51>
 实际上只要满足rsp+oxc中的值为0即可，就是第二个输入的数字。
 
+###phase_5
+这个其实就是比较两个字符串是否相同，主要的问题就是这个字符串：
+
+    (gdb) print (char*) 0x4024b0
+    $1 = 0x4024b0 <array> "maduiersnfotvbylSo you think you can stop the bomb with ctrl-c, do you?"
+    
+结合phase_5函数中的内容，看起来似乎是映射，后来发现只需要输入的字符串的每一个字符截取后四位之后都能得到9 15 14 5 6 7 这样的int数就行。
+
+So you got that one.  Try this one.
+)/>%FG
+
+###phase_6
+
+
