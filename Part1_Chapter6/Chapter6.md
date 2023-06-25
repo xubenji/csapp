@@ -44,6 +44,7 @@ DRAM = memory
 clear2 的条件是最好的，都是顺序读写。
 clear1和clear3比较差
 
+### TODO: 学习6.3
 
 
 
