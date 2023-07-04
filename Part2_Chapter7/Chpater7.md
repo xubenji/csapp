@@ -41,8 +41,16 @@ count	yes	Local	swap.o	.bss
 ### hmk 7.7
 只需要在bar5.c中加入static关键字即可，因为加了以后double x就只对本文件有效。
 
+### hmk 7.9 
+我感觉是，即便不给main赋初始值，main也有初始值0
 
+### hmk 7.10
+gcc p.o libx.a p.o
+gcc p.o libx.a liby.a libx.a
+gcc p.o libx.a liby.a libz.a libx.a
 
+### hmk 7.11 
+内存对其，填充两字节
 
-
+### hmk 7.12
 
