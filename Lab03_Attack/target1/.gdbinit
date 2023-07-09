@@ -8,6 +8,8 @@ b *0x40181d
 b *0x4018fa
 b *0x4018cf
 b *0x401990
+b *0x4017b9
+b *0x401911
 
 run -q < hex
 display/x $rax

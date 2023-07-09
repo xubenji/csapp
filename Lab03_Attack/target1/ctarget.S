@@ -1754,7 +1754,7 @@ Disassembly of section .text:
   401908:	48 89 fe             	mov    rsi,rdi
   40190b:	8b 3d d3 2b 20 00    	mov    edi,DWORD PTR [rip+0x202bd3]        # 6044e4 <cookie>
   401911:	e8 36 ff ff ff       	call   40184c <hexmatch>
-  401916:	85 c0                	test   eax,eax
+  ç:	85 c0                	test   eax,eax
   401918:	74 23                	je     40193d <touch3+0x43>
   40191a:	48 89 da             	mov    rdx,rbx
   40191d:	be 38 31 40 00       	mov    esi,0x403138
