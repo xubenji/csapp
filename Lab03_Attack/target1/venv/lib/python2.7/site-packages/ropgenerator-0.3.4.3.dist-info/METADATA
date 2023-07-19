@@ -1,0 +1,26 @@
+Metadata-Version: 2.0
+Name: ropgenerator
+Version: 0.3.4.3
+Summary: ROPGenerator makes ROP exploits easy by finding and chaining gadgets
+Home-page: https://github.com/Boyan-MILANOV/ropgenerator
+Author: Boyan MILANOV
+Author-email: boyan.milanov@hotmail.fr
+License: GPLv3
+Keywords: rop generator chain gadget semantic automatic exploit ropchain
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Security
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Requires-Dist: ROPGadget4ROPGenerator
+Requires-Dist: barf (==0.4.0)
+Requires-Dist: capstone (==3.0.5rc2)
+Requires-Dist: enum
+Requires-Dist: prompt-toolkit
+Requires-Dist: z3-solver
+
+UNKNOWN
+
+

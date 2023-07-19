@@ -1,0 +1,2 @@
+0x0000000000401383 : pop rsi ; ret
+echo 0x00000000004019a2 : mov rdi, rax ; ret

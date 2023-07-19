@@ -1,0 +1,18 @@
+Metadata-Version: 2.0
+Name: capstone
+Version: 3.0.5rc2
+Summary: Capstone disassembly engine
+Home-page: http://www.capstone-engine.org
+Author: Nguyen Anh Quynh
+Author-email: aquynh@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Requires: ctypes
+Provides: capstone
+
+UNKNOWN
+
+

@@ -1,0 +1,5 @@
+[console_scripts]
+BARFcfg = barf.tools.cfg.cfg:main
+BARFcg = barf.tools.cg.cg:main
+BARFgadgets = barf.tools.gadgets.gadgets:main
+

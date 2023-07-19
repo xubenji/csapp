@@ -1,0 +1,4 @@
+#!/root/csapp/Lab03_Attack/target1/venv/bin/python
+# EASY-INSTALL-SCRIPT: 'ropgenerator==1.2','ROPGenerator'
+__requires__ = 'ropgenerator==1.2'
+__import__('pkg_resources').run_script('ropgenerator==1.2', 'ROPGenerator')
