@@ -1,29 +1,31 @@
 #include "../code/include/csapp.h"
-#include "stdio.h"
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
 
+int main() {
+    int fd = open("test.txt", O_RDONLY);
+    if (fd == -1) {
+        perror("open");
+        return 1;
+    }
 
-void mmapcopy(int fd, int size)
-{
-	char *bufp;
-	
-	bufp = Mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0);
-	Write(1, bufp, size);
-	return;
-}
+    // 获取文件大小
+    off_t len = lseek(fd, 0, SEEK_END);
 
-int main(int argc, char *argv[]) 
-{
-	int fd;
-	struct stat stat;
-	if (argc < 2) {
-		fprintf(stderr, "Need at least 2 command line arguments.\n");
-		exit(1);
-	}
-	
-	fd = Open(argv[1], O_RDONLY, 0);
-	
-	fstat(fd, &stat);
-	mmapcopy(fd, stat.st_size);
-	
-	return 0;
+    void *addr = mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd, 0);
+    if (addr == MAP_FAILED) {
+        perror("mmap");
+        close(fd);
+        return 1;
+    }
+
+    // 打印文件的前10个字节
+    write(STDOUT_FILENO, addr, 10);
+    printf("\n");
+
+    munmap(addr, len);
+    close(fd);
+    return 0;
 }
